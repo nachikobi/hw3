@@ -12,12 +12,15 @@ while index < len(line) and line[index].isdigit():
       index += 1
   token = {'type': 'NUMBER', 'number': number}
 return token, index
+
 def readPlus(line, index):
   token = {'type': 'PLUS'}
 return token, index + 1
+
 def readMinus(line, index):
   token = {'type': 'MINUS'}
 return token, index + 1
+
 def tokenize(line):
   tokens = []
   index = 0
@@ -33,6 +36,7 @@ print('Invalid character found: ' + line[index])
 exit(1)
     tokens.append(token)
 return tokens
+
 def evaluate(tokens):
   answer = 0
   tokens.insert(0, {'type': 'PLUS'}) # Insert a dummy '+' token
@@ -48,6 +52,7 @@ print('Invalid syntax')
 exit(1)
     index += 1
 return answer
+
 def test(line):
   tokens = tokenize(line)
   actualAnswer = evaluate(tokens)
@@ -57,6 +62,7 @@ print("PASS! (%s = %f)" % (line, expectedAnswer))
 else:
 print("FAIL! (%s should be %f but was %f)" % (line, expectedAnswer, actualAnswer))
 # Add more tests to this function :)
+
 def runTest():
 print("==== Test started! ====")
   test("1+2")
