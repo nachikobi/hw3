@@ -21,6 +21,14 @@ def readMinus(line, index):
   token = {'type': 'MINUS'}
   return token, index + 1
 
+def readMult(line, index):
+  token = {'type': 'MULTIPLE'}
+  return token, index + 1
+
+def readDiv(line, index):
+  token = {'type': 'DIVISION'}
+  return token, index + 1
+
 def tokenize(line):
   tokens = []
   index = 0
@@ -31,15 +39,41 @@ def tokenize(line):
       (token, index) = readPlus(line, index)
     elif line[index] == '-':
       (token, index) = readMinus(line, index)
+    elif line[index] == '*':
+      (token, index) = readMult(line, index)
+    elif line[index] == '/':
+      (token, index) = readDiv(line, index)
     else:
       print('Invalid character found: ' + line[index])
       exit(1)
     tokens.append(token)
   return tokens
 
+def preevaluate(tokens):
+  index = 0
+  preindex = 0
+  pretokens = []
+  while index < len(tokens):
+    if tokens[index]['type'] == 'MULTIPLE':
+      preanswer = tokens[index-1]['number']
+      preanswer *= tokens[index+1]['number']
+      index += 2
+      while index < len(tokens) and tokens[index]['type'] == 'MULTIPLE':
+        preanswer *= tokens[index+1]['number']
+        index += 2
+      pretokens.insert(preindex-1,{'type': 'NUMBER', 'number': preanswer})
+
+    else:
+      pretokens.insert(preindex,tokens[index])
+      preindex += 1
+      index += 1
+  return pretokens
+
+
 def evaluate(tokens):
   answer = 0
   tokens.insert(0, {'type': 'PLUS'}) # Insert a dummy '+' token
+  tokens = preevaluate(tokens)
   index = 1
   while index < len(tokens):
     if tokens[index]['type'] == 'NUMBER':
@@ -67,6 +101,7 @@ def runTest():
   print("==== Test started! ====")
   test("1+2")
   test("1.0+2.1-3")
+  test("1*2")
   print("==== Test finished! ====\n")
 
 runTest()
