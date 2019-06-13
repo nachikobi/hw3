@@ -55,13 +55,11 @@ def preevaluate(tokens):
   pretokens = []
   while index < len(tokens):
     if tokens[index]['type'] == 'MULTIPLE':
-      preanswer = tokens[index-1]['number']
-      preanswer *= tokens[index+1]['number']
+      pretokens[preindex-1]['number'] *= tokens[index+1]['number']
       index += 2
       while index < len(tokens) and tokens[index]['type'] == 'MULTIPLE':
-        preanswer *= tokens[index+1]['number']
+        pretokens[preindex-1]['number'] *= tokens[index+1]['number']
         index += 2
-      pretokens[preindex-1] = {'type': 'NUMBER', 'number': preanswer}  # Overwrite data
 
     else:
       pretokens.insert(preindex,tokens[index])
@@ -102,6 +100,7 @@ def runTest():
   test("1+2")
   test("1.0+2.1-3")
   test("1*2")
+  test("1+2*3")
   print("==== Test finished! ====\n")
 
 runTest()
