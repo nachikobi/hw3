@@ -61,7 +61,7 @@ def preevaluate(tokens):
       while index < len(tokens) and tokens[index]['type'] == 'MULTIPLE':
         preanswer *= tokens[index+1]['number']
         index += 2
-      pretokens.insert(preindex-1,{'type': 'NUMBER', 'number': preanswer})
+      pretokens[preindex-1] = {'type': 'NUMBER', 'number': preanswer}  # Overwrite data
 
     else:
       pretokens.insert(preindex,tokens[index])
