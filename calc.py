@@ -64,6 +64,8 @@ def preevaluate(tokens):
         elif tokens[index]['type'] == 'DIVISION':
           pretokens[preindex - 1]['number'] /= tokens[index + 1]['number']
           index += 2
+        else:
+          break
     elif tokens[index]['type'] == 'DIVISION':
       pretokens[preindex - 1]['number'] /= tokens[index + 1]['number']
       index += 2
@@ -74,6 +76,8 @@ def preevaluate(tokens):
         elif tokens[index]['type'] == 'DIVISION':
           pretokens[preindex - 1]['number'] /= tokens[index + 1]['number']
           index += 2
+        else:
+          break
     else:
       pretokens.insert(preindex,tokens[index])
       preindex += 1
@@ -110,12 +114,38 @@ def test(line):
 # Add more tests to this function :)
 def runTest():
   print("==== Test started! ====")
+  # 足し算
   test("1+2")
-  test("1.0+2.1-3")
+  test("10+20")
+  test("1.0+2.1")
+  test("1+2.1+36")
+
+  # 引き算
+  test("2-1")
+  test("1-2")
+  test("20-10")
+  test("10-20")
+  test("2.1-1.0")
+  test("1.0-2.1")
+  test("1-2.1-36")
+
+  # 掛け算
   test("1*2")
-  test("1+2*3")
+  test("10*20")
+  test("1.0*2.1")
+  test("1*2.1*36")
+
+  # 割り算
   test("4/2")
-  test("9-6/2")
+  test("2/4")
+
+  # 複合
+  test("1+2.1-36")
+  test("1+2.1*36")
+  test("1+2.1/7")
+  test("1-2.1*36")
+  test("1-21/0.7")
+  test("1+2.1*36/3-6")
   print("==== Test finished! ====\n")
 
 runTest()
